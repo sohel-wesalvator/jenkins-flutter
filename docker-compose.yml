@@ -1,9 +1,22 @@
-version: "3.8"
+version: '3.8'
 
 services:
-  flutter-builder:
+  jenkins:
     build: .
-    container_name: flutter-builder
+    container_name: jenkins
+    ports:
+      - "8080:8080"   # For Jenkins UI
+      - "50000:50000" # Optional: for agents
     volumes:
-      - .:/workspace
-    tty: true
+      - jenkins_data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    networks:
+      - jenkins_net
+
+networks:
+  jenkins_net:
+
+volumes:
+  jenkins_data:
+  
